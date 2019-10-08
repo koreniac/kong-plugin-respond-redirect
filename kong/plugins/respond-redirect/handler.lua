@@ -1,16 +1,20 @@
 
 local redirect_to = require "kong.plugins.respond-redirect.redirect_to"
-
+local BasePlugin = require "kong.plugins.base_plugin"
 
 -- local is_body_transform_set = header_transformer.is_body_transform_set
 -- local is_json_body = header_transformer.is_json_body
 
 
 
+local RespondRedirectHandler = BasePlugin:extend()
+
+function RespondRedirectHandler:new()
+    RespondRedirectHandler.super.new(self, "RespondRedirect")
+end
 
 
 
-local RespondRedirectHandler = {}
 function RespondRedirectHandler:header_filter(conf)
     redirect_to.redirect_to(conf)
   end
@@ -42,7 +46,7 @@ function RespondRedirectHandler:header_filter(conf)
 -- end
 
 
-RespondRedirectHandler.PRIORITY = 801
+RespondRedirectHandler.PRIORITY = 1800
 RespondRedirectHandler.VERSION = "1.0.0"
 
 

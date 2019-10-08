@@ -1,4 +1,4 @@
-local concat = table.concat
+-- local concat = table.concat
 
 local ngx = ngx
 
