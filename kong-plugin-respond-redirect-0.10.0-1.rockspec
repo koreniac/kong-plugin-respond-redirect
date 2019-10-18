@@ -1,5 +1,5 @@
 package = "kong-plugin-respond-redirect"
-version = "0.4.0-1"
+version = "0.10.0-1"
 source = {
    url = "git+https://naruphon@gitlab.com/true-itsd/huawei-cloud/mvp/mpf/ni/aoc/kong-plugin-respond-redirect.git"
 }

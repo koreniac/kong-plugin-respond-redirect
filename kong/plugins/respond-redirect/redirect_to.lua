@@ -16,6 +16,45 @@ local server_header = meta._SERVER_TOKENS
 
 local _M = {}
 
+function _M.replaceHeader(conf)
+    kong.response.set_header("Content-Type", "text/html")
+    local response_code = kong.response.get_status()
+    local status  = conf.status_code
+    local content = nil
+    if response_code == 400 then
+        content = conf.body_400
+    elseif response_code == 401 then
+        content = conf.body_401
+    elseif response_code == 429 then
+        content = conf.body_429
+    elseif response_code == 500 then
+        content = conf.body_500
+    else
+        content = "<html><head><script>window.location.href=\"https://aoc.truecorp.co.th/K500.html\";</script></head><body></body></html>"
+    end
+    kong.response.set_header("Content-Length", string.len(content))
+end
+
+function _M.replaceBody(conf)
+    local response_code = kong.response.get_status()
+    local status  = conf.status_code
+    local content = nil
+    if response_code == 400 then
+        content = conf.body_400
+    elseif response_code == 401 then
+        content = conf.body_401
+    elseif response_code == 429 then
+        content = conf.body_429
+    elseif response_code == 500 then
+        content = conf.body_500
+    else
+        content = "<html><head><script>window.location.href=\"https://aoc.truecorp.co.th/K500.html\";</script></head><body></body></html>"
+    end
+    return content;
+end
+
+
+
 function _M.redirect_to(conf)
     local response_code = kong.response.get_status()
     local status  = conf.status_code
