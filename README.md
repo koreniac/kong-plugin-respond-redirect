@@ -104,15 +104,53 @@ $ luarocks pack kong-plugin-xxx 0.1.0-1
     kong-plugin-xxx-0.1.0-1.all.rock
 จบขั้นนี้เราจะได้ plugin เสร็จเรียบร้อย พร้อมเอาไป install ที่ kong ละ
 
-#### Installation
-เนื่องจาก vagrant ในเครื่องตัวเองไม่ได้ไงเลยไปยืม staging น้อง ถถถ
-move file แล้ว install เรยด้วย รัวร๊อก
+#### Upload to luarocks.org
+เพื่อความง่ายในการ distribute plugin ของเรา เราจะเอา plugin ของเราไปฝากไว้ที่ luarocks.org และระบบต้องการ 2 file
+1. *.rockspec ซึ้่งเราได้ pack ไปแล้วก่อนหน้านี้
+2. *.src.rock file นี้ยังไม่มี สร้างด้วยคำสั่ง
 ```shell
-$ scp -r kong-plugin-xxx-0.1.0-1.all.rock xxx@ip:/destination
-$ ssh xxx@ip
-$ luarocks install kong-plugin-xxx-0.1.0-1.all.rock
+$luarocks pack kong-plugin-yourplugin-version.rockspec
+```
+เสร็จแล้ว upload กันเลย
+```shell
+$luarocks upload kong-plugin-respond-yourplugin-version.rockspec
+```
+แต่มันจะ error นะระบบต้องการ api key
+```shell
+Error: You need an API key to upload rocks.
+Navigate to https://luarocks.org/settings to get a key
+and then pass it through the --api-key=<key> flag.
 ```
 
+กลับไปที่ luarock.org แล้วเข้าไปตามภาพเลย
+![api-key][rocks.org-apikey]
+แล้วใช้คำสั่ง
+```shell
+$luarocks upload kong-plugin-yourplugin-version.rockspec --api-key=oZ846aXKapYCDFeSNR8m81oYpu1AQPoxdPuOmH7g
+
+Sending kong-plugin-respond-redirect-0.11.0-1.rockspec ...
+Packing kong-plugin-respond-redirect
+Cloning into 'kong-plugin-respond-redirect'...
+remote: Enumerating objects: 52, done.
+remote: Counting objects: 100% (52/52), done.
+remote: Compressing objects: 100% (26/26), done.
+remote: Total 52 (delta 15), reused 52 (delta 15), pack-reused 0
+Unpacking objects: 100% (52/52), done.
+```
+จบปิ้ง
+
+#### Installation
+ทำได้ 2 แบบ
+1. manual
+```shell
+$scp -r kong-plugin-xxx-0.1.0-1.all.rock xxx@ip:/destination
+$ssh xxx@ip
+$luarocks install kong-plugin-xxx-0.1.0-1.all.rock
+```
+2. from luarock.org
+```shell
+ $luarocks install kong-plugin-respond-redirect
+```
 #### check plugin is installed
 หลังจาก install แล้วก็ตรวจสอบซะหน่อย ว่ามัน install ถูกที่นะ
 ```shell
@@ -169,7 +207,7 @@ $ vi /etc/kong/kong.conf
 * - bundled คือ plugin default ทั้งหมดอะนะ
 
 #### kong restart
-ทำทุกอย่างเส็ดหมดแล้วรอไรหล่ะ restart แม่งเรย
+ทำทุกอย่างเส็ดหมดแล้วรอไรหล่ะ restart เรย
 ``` shell
 $ kong restart
 ```
@@ -232,3 +270,4 @@ $ luarocks remove kong-plugin-xxx-0.1.0-1.all.rock
 [kong-plugin-template]: https://github.com/Kong/kong-plugin
 [kong-vagrant]: https://github.com/Kong/kong-vagrant
 [kong-plugin-dev]: https://docs.konghq.com/0.14.x/plugin-development/
+[rocks.org-apikey]: https://www.mx7.com/i/2b3/WTe6ka.png
