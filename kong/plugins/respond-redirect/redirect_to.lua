@@ -21,34 +21,45 @@ function _M.replaceHeader(conf)
     local response_code = kong.response.get_status()
     local status  = conf.status_code
     local content = nil
-    if response_code == 400 then
-        content = conf.body_400
-    elseif response_code == 401 then
-        content = conf.body_401
-    elseif response_code == 429 then
-        content = conf.body_429
-    elseif response_code == 500 then
-        content = conf.body_500
+    if response_code < 400 then
+
     else
-        content = "<html><head><script>window.location.href=\"https://aoc.truecorp.co.th/K500.html\";</script></head><body></body></html>"
+        if response_code == 400 then
+            content = conf.body_400
+        elseif response_code == 401 then
+            content = conf.body_401
+        elseif response_code == 429 then
+            content = conf.body_429
+        elseif response_code >= 500 then
+            content = conf.body_500
+        else
+            content = conf.body_xxx
+            -- content = "<html><head><script>window.location.href=\"https://aoc.truecorp.co.th/K500.html\";</script></head><body></body></html>"
+        end
+        kong.response.set_header("Content-Length", string.len(content))
     end
-    kong.response.set_header("Content-Length", string.len(content))
+
 end
 
 function _M.replaceBody(conf)
     local response_code = kong.response.get_status()
     local status  = conf.status_code
     local content = nil
-    if response_code == 400 then
-        content = conf.body_400
-    elseif response_code == 401 then
-        content = conf.body_401
-    elseif response_code == 429 then
-        content = conf.body_429
-    elseif response_code == 500 then
-        content = conf.body_500
+    if response_code < 400 then
+
     else
-        content = "<html><head><script>window.location.href=\"https://aoc.truecorp.co.th/K500.html\";</script></head><body></body></html>"
+        if response_code == 400 then
+            content = conf.body_400
+        elseif response_code == 401 then
+            content = conf.body_401
+        elseif response_code == 429 then
+            content = conf.body_429
+        elseif response_code == 500 then
+            content = conf.body_500
+        else
+            content = conf.body_xxx
+            -- content = "<html><head><script>window.location.href=\"https://aoc.truecorp.co.th/K500.html\";</script></head><body></body></html>"
+        end
     end
     return content;
 end

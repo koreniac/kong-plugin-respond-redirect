@@ -14,6 +14,7 @@ return {
             { body_401 = { type = "string" }, },
             { body_429 = { type = "string" }, },
             { body_500 = { type = "string" }, },
+            { body_xxx = { type = "string" }, },
         },
       },
     },

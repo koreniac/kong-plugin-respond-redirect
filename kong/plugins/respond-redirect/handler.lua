@@ -37,7 +37,10 @@ function RespondRedirectHandler:body_filter(conf)
 
 
     local body = redirect_to.replaceBody(conf)
-    ngx.arg[1] = body
+    if body ~= nil then
+      ngx.arg[1] = body
+    end
+
 
 
   -- end
